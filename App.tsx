@@ -11,6 +11,7 @@ import {
   Scale,
   MessageCircle
 } from 'lucide-react';
+import CalculadorasSection from './features/calculadoras/ui/CalculadorasSection';
 
 // --- Logo Component ---
 const LOGO_SRC = "/images/Logo.png.png";
@@ -38,6 +39,7 @@ const Navbar = () => {
   const menuItems = [
     { name: 'Início', href: '#inicio' },
     { name: 'Sobre', href: '#sobre' },
+    { name: 'Calculadoras Jurídicas', href: '#calculadoras' },
     { name: 'Atuação', href: '#atuacao' },
 
     { name: 'Contato', href: '#contato' }
@@ -284,7 +286,6 @@ const Contact = () => (
             <div className="md:col-span-2 border-b border-[#30363d] pb-3">
               <select className="w-full bg-transparent outline-none font-light py-2 text-lg text-[#8b949e] focus:text-[#f0f6fc] transition-all">
                 <option value="">Selecione o assunto</option>
-
                 <option value="previdenciario">Outros Benefícios INSS</option>
                 <option value="condominial">Direito Condominial</option>
                 <option value="outro">Outros Assuntos</option>
@@ -333,6 +334,7 @@ const App: React.FC = () => {
       <main>
         <Hero />
         <About />
+        <CalculadorasSection />
         <PracticeAreas />
         <Contact />
       </main>
