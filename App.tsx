@@ -311,7 +311,7 @@ const Footer = () => (
       <Logo className="w-16 h-16 mb-10 opacity-40" />
       <div className="mb-10">
         <span className="text-2xl tracking-[0.25em] font-light block mb-3 uppercase text-[#f0f6fc]">GUILHERME GARLINI</span>
-        <span className="text-[11px] tracking-[0.4em] text-[#8b949e] uppercase font-bold">OAB/MT 35967 | Especialista</span>
+        <span className="text-[11px] tracking-[0.4em] text-[#8b949e] uppercase font-bold">OAB/MT 35967</span>
       </div>
       <div className="flex gap-10 mb-16">
         {['Instagram', 'LinkedIn', 'WhatsApp'].map(social => (
@@ -339,17 +339,25 @@ const App: React.FC = () => {
       <Footer />
       
       {/* Subtle Floating Contact Button */}
-      <a 
+      <a
         href="https://wa.me/5566999562660"
         target="_blank"
         rel="noreferrer"
-        className="fixed bottom-10 right-10 z-50 bg-[#161b22] text-gold border border-[#30363d] p-5 rounded-full shadow-2xl hover:shadow-gold/20 hover:-translate-y-2 transition-all group"
+        className="fixed bottom-10 right-10 z-50 w-16 h-16 rounded-full shadow-2xl hover:shadow-gold/20 hover:-translate-y-2 transition-all"
         title="Falar com Dr. Guilherme"
       >
-        <MessageCircle size={22} className="group-hover:scale-110 transition-transform" />
+        <img
+          src="/images/whats.png"
+          alt="WhatsApp"
+          className="w-full h-full object-contain"
+          loading="eager"
+          decoding="async"
+        />
       </a>
     </div>
   );
 };
 
 export default App;
+
+
