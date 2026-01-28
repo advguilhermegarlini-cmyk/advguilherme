@@ -49,7 +49,7 @@ const Navbar = () => {
     <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-[#161b22]/95 backdrop-blur-md py-4 shadow-sm' : 'bg-transparent py-8'}`}>
       <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
         <div className="flex items-center">
-          <Logo className={`transition-all duration-500 ease-out ${scrolled ? 'h-14 w-auto max-w-[180px]' : 'h-24 w-auto max-w-[320px]'}`} />
+          <Logo className={`transition-all duration-500 ease-out ${scrolled ? 'h-16 w-auto max-w-[200px]' : 'h-28 w-auto max-w-[360px]'}`} />
         </div>
 
         <div className="hidden lg:flex items-center gap-10">
@@ -134,6 +134,39 @@ const PracticeAreas = () => {
         'Cobranças, garantias e inadimplência',
         'Estratégia jurídica para crescimento sustentável'
       ]
+    },
+    { 
+      title: 'Direito Civil', 
+      desc: 'Atuação em conflitos e contratos civis, priorizando soluções práticas e seguras para pessoas e empresas.',
+      icon: <FileText className="text-gold mb-6" size={28} strokeWidth={1} />,
+      services: [
+        'Contratos e obrigações',
+        'Responsabilidade civil',
+        'Cobranças e indenizações',
+        'Negociações e acordos'
+      ]
+    },
+    { 
+      title: 'Direito Penal', 
+      desc: 'Defesa técnica e estratégica em todas as fases do processo, com foco em garantias e resultados.',
+      icon: <Scale className="text-gold mb-6" size={28} strokeWidth={1} />,
+      services: [
+        'Acompanhamento em flagrantes',
+        'Inquéritos e processos',
+        'Medidas cautelares',
+        'Recursos e sustentações'
+      ]
+    },
+    { 
+      title: 'Direito Ambiental', 
+      desc: 'Assessoria preventiva e contenciosa para regularidade ambiental e mitigação de riscos.',
+      icon: <Building2 className="text-gold mb-6" size={28} strokeWidth={1} />,
+      services: [
+        'Licenciamento ambiental',
+        'Defesas administrativas',
+        'Autos de infração',
+        'Regularização e conformidade'
+      ]
     }
   ];
 
@@ -142,7 +175,7 @@ const PracticeAreas = () => {
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8 text-center md:text-left">
           <div className="max-w-xl">
-            <h2 className="text-4xl md:text-5xl font-light mb-6 text-[#f0f6fc]">Expertise Profissional</h2>
+            <h2 className="text-4xl md:text-5xl font-light mb-6 text-[#f0f6fc]">Atuação</h2>
             <p className="text-[#8b949e] font-light leading-relaxed">
               Atuação pautada pela ética e transparência em demandas administrativas e judiciais.
             </p>
@@ -150,18 +183,23 @@ const PracticeAreas = () => {
           <div className="h-[1px] flex-grow bg-[#30363d] mx-12 hidden md:block mb-6"></div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-16">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {areas.map((area, i) => (
-            <div key={i} className="flex flex-col p-10 lg:p-14 border border-[#30363d] bg-[#0d1117]/30 hover:bg-[#161b22] hover:shadow-2xl transition-all duration-700 group relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.07] transition-opacity">
-                <Scale size={150} />
+            <div
+              key={i}
+              className="flex flex-col p-8 border border-[#30363d] bg-[#0d1117]/50 hover:bg-[#161b22] hover:shadow-2xl transition-all duration-700 group relative overflow-hidden min-h-[380px]"
+            >
+              <div className="absolute top-0 right-0 p-6 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity">
+                <Scale size={120} />
               </div>
               {area.icon}
-              <h3 className="text-3xl font-light mb-6 group-hover:text-gold transition-colors text-[#f0f6fc]">{area.title}</h3>
-              <p className="text-[#8b949e] font-light leading-relaxed mb-10 text-lg">{area.desc}</p>
-              <div className="grid grid-cols-1 gap-4 mb-10 relative z-10">
+              <h3 className="text-2xl font-light mb-4 group-hover:text-gold transition-colors text-[#f0f6fc] leading-snug">
+                {area.title}
+              </h3>
+              <p className="text-[#9aa3ad] font-light leading-relaxed text-sm">{area.desc}</p>
+              <div className="grid grid-cols-1 gap-3 mt-6 mb-8 relative z-10 text-xs">
                 {area.services.map((service, si) => (
-                  <div key={si} className="flex items-center gap-4 text-sm text-[#8b949e] group-hover:text-[#c9d1d9] transition-colors">
+                  <div key={si} className="flex items-start gap-3 text-[#8b949e] group-hover:text-[#c9d1d9] transition-colors">
                     <div className="w-1.5 h-1.5 rounded-full bg-gold/40"></div>
                     {service}
                   </div>
@@ -309,7 +347,7 @@ const Contact = () => (
 const Footer = () => (
   <footer className="py-24 border-t border-[#30363d] bg-[#161b22]">
     <div className="max-w-6xl mx-auto px-6 flex flex-col items-center text-center">
-      <Logo className="w-16 h-16 mb-10 opacity-40" />
+      <Logo className="w-16 h-16 mb-10" />
       <div className="mb-10">
         <span className="text-2xl tracking-[0.25em] font-light block mb-3 uppercase text-[#f0f6fc]">GUILHERME GARLINI</span>
         <span className="text-[11px] tracking-[0.4em] text-[#8b949e] uppercase font-bold">OAB/MT 35967</span>
@@ -341,21 +379,24 @@ const App: React.FC = () => {
       <Footer />
       
       {/* Subtle Floating Contact Button */}
-      <a
-        href="https://wa.me/5566999562660"
-        target="_blank"
-        rel="noreferrer"
-        className="fixed bottom-10 right-10 z-50 w-16 h-16 rounded-full shadow-2xl hover:shadow-gold/20 hover:-translate-y-2 transition-all"
-        title="Falar com Dr. Guilherme"
-      >
-        <img
-          src="/images/whats.png"
-          alt="WhatsApp"
-          className="w-full h-full object-contain"
-          loading="eager"
-          decoding="async"
-        />
-      </a>
+      <div className="fixed bottom-10 right-10 z-50 flex flex-col items-center">
+        <a
+          href="https://wa.me/5566999562660"
+          target="_blank"
+          rel="noreferrer"
+          className="whatsapp-blink w-20 h-20 rounded-full shadow-2xl hover:shadow-gold/20 hover:-translate-y-2 transition-all"
+          title="Falar com Dr. Guilherme"
+        >
+          <img
+            src="/images/whats.png"
+            alt="WhatsApp"
+            className="w-full h-full object-contain scale-[2.2]"
+            loading="eager"
+            decoding="async"
+          />
+        </a>
+        <span className="mt-2 text-[10px] uppercase tracking-widest text-gold">24h</span>
+      </div>
     </div>
   );
 };
