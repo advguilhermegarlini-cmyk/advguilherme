@@ -41,6 +41,7 @@ const Navbar = () => {
     { name: 'Sobre', href: '#sobre' },
     { name: 'Calculadoras Jurídicas', href: '#calculadoras' },
     { name: 'Atuação', href: '#atuacao' },
+    { name: 'Indicadores do Agro', href: '#indicadores-agro' },
 
     { name: 'Contato', href: '#contato' }
   ];
@@ -282,6 +283,365 @@ const About = () => {
   );
 };
 
+const AgroIndicators = () => {
+  type Indicator = {
+    id: string;
+    title: string;
+    source: string;
+    period: string;
+    current: number | null;
+    previous: number | null;
+    unit: string;
+    formula: string;
+    note: string;
+    legal: string;
+    regionLabel?: string;
+  };
+
+  const [selicAvg12m, setSelicAvg12m] = useState<number | null>(null);
+  const [selicLast, setSelicLast] = useState<number | null>(null);
+  const [selicPeriod, setSelicPeriod] = useState<string>('');
+  const [priceIndicators, setPriceIndicators] = useState<Indicator[]>([]);
+  const [priceUpdatedAt, setPriceUpdatedAt] = useState<string>('');
+
+  useEffect(() => {
+    const fetchSelic = async () => {
+      try {
+        const resp = await fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.4390/dados?formato=json');
+        const data: { data: string; valor: string }[] = await resp.json();
+        if (!Array.isArray(data) || data.length === 0) return;
+        const last12 = data.slice(-12);
+        const values = last12.map((item) => Number(item.valor.replace(',', '.'))).filter((v) => !Number.isNaN(v));
+        if (values.length === 0) return;
+        const avg = values.reduce((sum, v) => sum + v, 0) / values.length;
+        const last = values[values.length - 1];
+        setSelicAvg12m(avg);
+        setSelicLast(last);
+        setSelicPeriod(`${last12[0].data} a ${last12[last12.length - 1].data}`);
+      } catch {
+        // Silently ignore; UI will show fallback
+      }
+    };
+    fetchSelic();
+  }, []);
+
+  useEffect(() => {
+    const fetchConabPrices = async () => {
+      try {
+        const resp = await fetch('https://portaldeinformacoes.conab.gov.br/downloads/arquivos/PrecosMensalUF.txt');
+        const buffer = await resp.arrayBuffer();
+        const decoder = new TextDecoder('iso-8859-1');
+        const text = decoder.decode(buffer);
+        const lines = text.split(/\r?\n/).filter(Boolean);
+        if (lines.length <= 1) return;
+
+        const normalize = (value: string) =>
+          value
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toUpperCase()
+            .trim();
+
+        const rows = lines.slice(1).map((line) => {
+          const cols = line.split(';');
+          return {
+            produto: normalize(cols[0] || ''),
+            classificacao: normalize(cols[1] || ''),
+            uf: normalize(cols[3] || ''),
+            ano: Number((cols[5] || '').trim()),
+            mes: Number((cols[6] || '').trim()),
+            nivel: normalize(cols[7] || ''),
+            valor: Number((cols[8] || '').replace(',', '.')),
+          };
+        });
+
+        const monthNames = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+
+        const buildPriceIndicator = (config: {
+          id: string;
+          title: string;
+          produto: string;
+          classificacao: string;
+          uf: string;
+          nivel: string;
+          note: string;
+          legal: string;
+          unitLabel?: string;
+          unitMultiplier?: number;
+        }): Indicator => {
+          const unitMultiplier = config.unitMultiplier ?? 60;
+          const unitLabel = config.unitLabel ?? 'R$/sc (60 kg)';
+          const filtered = rows.filter(
+            (row) =>
+              row.produto === normalize(config.produto) &&
+              row.classificacao === normalize(config.classificacao) &&
+              row.uf === normalize(config.uf) &&
+              row.nivel === normalize(config.nivel) &&
+              Number.isFinite(row.valor)
+          );
+          if (filtered.length === 0) {
+            return {
+              id: config.id,
+              title: config.title,
+              source: 'CONAB – Preços agropecuários (mensal/UF)',
+              period: 'Dados oficiais não disponíveis',
+              current: null,
+              previous: null,
+              unit: unitLabel,
+              formula: 'Média simples das observações mensais disponíveis, convertida para saca de 60 kg',
+              note: config.note,
+              legal: config.legal,
+              regionLabel: config.uf,
+            };
+          }
+
+          const years = Array.from(new Set(filtered.map((row) => row.ano))).sort((a, b) => a - b);
+          const targetYear = years.includes(2026) ? 2026 : years[years.length - 1];
+          const yearRows = filtered.filter((row) => row.ano === targetYear);
+          const months = Array.from(new Set(yearRows.map((row) => row.mes))).sort((a, b) => a - b);
+          const maxMonth = months.length > 0 ? months[months.length - 1] : 12;
+          const periodLabelBase = `Jan–${monthNames[maxMonth - 1]}/${targetYear}`;
+          const periodLabel = targetYear < 2026 ? `${periodLabelBase} (último dado oficial)` : periodLabelBase;
+          const avg =
+            (yearRows.reduce((sum, row) => sum + row.valor, 0) / (yearRows.length || 1)) * unitMultiplier;
+
+          const prevYear = targetYear - 1;
+          const prevRows = filtered.filter(
+            (row) => row.ano === prevYear && row.mes <= maxMonth
+          );
+          const prevAvg =
+            prevRows.length > 0
+              ? (prevRows.reduce((sum, row) => sum + row.valor, 0) / prevRows.length) * unitMultiplier
+              : null;
+
+          return {
+            id: config.id,
+            title: config.title,
+            source: 'CONAB – Preços agropecuários (mensal/UF)',
+            period: periodLabel,
+            current: Number.isFinite(avg) ? avg : null,
+            previous: prevAvg,
+            unit: unitLabel,
+            formula: 'Média simples das observações mensais disponíveis no período, convertida para saca de 60 kg',
+            note: config.note,
+            legal: config.legal,
+            regionLabel: `UF ${config.uf}`,
+          };
+        };
+
+        const indicators: Indicator[] = [
+          buildPriceIndicator({
+            id: 'preco-soja-mt',
+            title: 'Preço médio da soja (MT)',
+            produto: 'SOJA',
+            classificacao: 'EM GRÃOS',
+            uf: 'MT',
+            nivel: 'PREÇO RECEBIDO P/ PRODUTOR',
+            note: 'Oscilações de preço impactam margem e adimplemento de CPR e barter.',
+            legal:
+              'Em contratos de venda antecipada e CPR, variações relevantes exigem atenção a garantias, cronograma de entrega e cláusulas de reajuste. É prudente revisar mecanismos de proteção e condições de renegociação.',
+            unitLabel: 'R$/sc (60 kg)',
+            unitMultiplier: 60,
+          }),
+          buildPriceIndicator({
+            id: 'preco-milho-mt',
+            title: 'Preço médio do milho (MT)',
+            produto: 'MILHO',
+            classificacao: 'EM GRÃOS',
+            uf: 'MT',
+            nivel: 'PREÇO RECEBIDO P/ PRODUTOR',
+            note: 'Preço do milho influencia o custo de produção e o fluxo de caixa pós-safra.',
+            legal:
+              'Em contratos de fornecimento e financiamentos de custeio, mudanças no preço do milho podem gerar pressão por alongamento e revisão de garantias. Recomenda-se monitorar cláusulas de desempenho e risco climático.',
+            unitLabel: 'R$/sc (60 kg)',
+            unitMultiplier: 60,
+          }),
+          buildPriceIndicator({
+            id: 'preco-boi-mt',
+            title: 'Preço médio do boi gordo (MT)',
+            produto: 'BOI',
+            classificacao: 'GORDO',
+            uf: 'MT',
+            nivel: 'PREÇO RECEBIDO P/ PRODUTOR',
+            note: 'Variações no preço do boi afetam contratos de confinamento e entrega.',
+            legal:
+              'Oscilações no boi gordo impactam contratos de fornecimento e garantias reais. É recomendável prever mecanismos de ajuste e revisar condições de execução em operações de crédito rural.',
+            unitLabel: 'R$/kg',
+            unitMultiplier: 1,
+          }),
+          buildPriceIndicator({
+            id: 'preco-leite-mt',
+            title: 'Preço médio do leite (MT)',
+            produto: 'LEITE DE VACA',
+            classificacao: 'IN NATURA',
+            uf: 'MT',
+            nivel: 'PREÇO RECEBIDO P/ PRODUTOR',
+            note: 'Preço do leite reflete pressão de custos e sazonalidade.',
+            legal:
+              'Em contratos de fornecimento contínuo, oscilações do preço do leite exigem atenção a reajustes periódicos e garantias de recebíveis. Recomenda-se formalizar critérios de atualização.',
+            unitLabel: 'R$/kg',
+            unitMultiplier: 1,
+          }),
+        ];
+
+        setPriceIndicators(indicators);
+        setPriceUpdatedAt(new Date().toLocaleDateString('pt-BR'));
+      } catch {
+        // Ignore failures; keep static indicators visible
+      }
+    };
+
+    fetchConabPrices();
+  }, []);
+
+  const percentChange = (current: number, previous: number) =>
+    ((current - previous) / previous) * 100;
+
+  const indicators: Indicator[] = [
+    ...priceIndicators,
+    {
+      id: 'lspa-soja-area',
+      title: 'Área plantada de soja',
+      source: 'IBGE – LSPA (nov/2025)',
+      period: 'Safra 2024 vs Safra 2025 (último dado oficial)',
+      current: 47_770_192,
+      previous: 46_328_794,
+      unit: 'ha',
+      formula: 'Variação % = (Área 2025 − Área 2024) ÷ Área 2024',
+      note: 'Expansão de área sugere maior pressão por contratos de arrendamento e logística.',
+      legal: 'Em contratos agrários, aumento de área tende a elevar disputas por prazos, preço do arrendamento e cumprimento de cláusulas de entrega. Recomenda-se revisão de garantias e prazos de CPRs vinculadas a safra.'
+    },
+    {
+      id: 'lspa-milho2-area',
+      title: 'Área colhida de milho 2ª safra',
+      source: 'IBGE – LSPA (nov/2025)',
+      period: 'Safra 2024 vs Safra 2025 (último dado oficial)',
+      current: 17_841_033,
+      previous: 16_674_590,
+      unit: 'ha',
+      formula: 'Variação % = (Área 2025 − Área 2024) ÷ Área 2024',
+      note: 'Crescimento da safrinha exige atenção a janelas climáticas e seguro rural.',
+      legal: 'Em contratos de compra futura e barter, o aumento da área impacta entregas e riscos de inadimplemento. Importante alinhar penalidades, cobertura de seguro e cláusulas de força maior.'
+    },
+    {
+      id: 'lspa-safra-total',
+      title: 'Produção total de grãos (estimativa)',
+      source: 'IBGE – LSPA (mar/2025, atualização 24/01/2026)',
+      period: 'Safra 2024 vs Safra 2025 (estimativa; último dado oficial)',
+      current: 323.8,
+      previous: 292.7,
+      unit: 'mi t',
+      formula: 'Variação % = (Safra 2025 − Safra 2024) ÷ Safra 2024',
+      note: 'Projeção de safra maior altera condições de armazenagem e fluxo de caixa.',
+      legal: 'A maior oferta tende a pressionar preços e renegociações em contratos de entrega. Cláusulas de reajuste e garantias reais devem ser revisadas em financiamentos e CPRs.'
+    },
+    {
+      id: 'selic-avg-12m',
+      title: 'SELIC média (12 meses)',
+      source: 'Banco Central do Brasil – SGS (Série 4390)',
+      period: selicPeriod || 'Últimos 12 meses disponíveis (2026)',
+      current: selicAvg12m,
+      previous: selicLast,
+      unit: '% a.m.',
+      formula: 'Média simples das 12 últimas observações da SELIC mensal',
+      note: 'Custo financeiro tende a impactar capital de giro e renegociações.',
+      legal: 'Em financiamentos rurais e operações com garantia real, a elevação da SELIC exige reavaliação do fluxo de caixa e dos índices de cobertura. Instrumentos de renegociação e alongamento devem considerar a capacidade de pagamento.'
+    }
+  ];
+
+  return (
+    <section id="indicadores-agro" className="py-32 bg-[#0d1117]">
+      <div className="max-w-6xl mx-auto px-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 text-center md:text-left">
+          <div className="max-w-2xl">
+            <h2 className="text-4xl md:text-5xl font-light mb-6 text-[#f0f6fc]">
+              Indicadores do Agronegócio – Análise Jurídico-Econômica
+            </h2>
+            <p className="text-[#8b949e] font-light leading-relaxed">
+              Leitura estratégica de dados públicos para apoiar decisões contratuais, crédito rural e gestão de riscos
+              de produtores e empresas do agro.
+            </p>
+            {priceUpdatedAt && (
+              <p className="text-xs text-[#6e7681] mt-4">
+                Atualizado em {priceUpdatedAt} (preços CONAB).
+              </p>
+            )}
+          </div>
+          <div className="h-[1px] flex-grow bg-[#30363d] mx-12 hidden md:block mb-6"></div>
+        </div>
+
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-2">
+          {indicators.map((item) => {
+            const hasNumbers = typeof item.current === 'number' && typeof item.previous === 'number';
+            const pct = hasNumbers ? percentChange(item.current as number, item.previous as number) : null;
+            const valueText = typeof item.current === 'number'
+              ? `${item.current.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}${item.unit ? ` ${item.unit}` : ''}`
+              : 'Carregando...';
+            const pctText = pct !== null ? `${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%` : '—';
+
+            return (
+              <div key={item.id} className="border border-[#30363d] bg-[#161b22]/50 p-8 flex flex-col gap-6">
+                <div className="flex items-start justify-between gap-6">
+                  <div>
+                    <p className="text-xs uppercase tracking-widest text-gold">Indicador</p>
+                    <h3 className="text-2xl font-light text-[#f0f6fc]">{item.title}</h3>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[10px] uppercase tracking-widest text-[#8b949e]">Variação</p>
+                    <p className="text-lg text-[#f0f6fc]">{pctText}</p>
+                  </div>
+                </div>
+
+                <div className="grid gap-4 text-sm text-[#c9d1d9]">
+                  <div className="flex items-center justify-between gap-6">
+                    <span className="text-[#8b949e]">Resultado</span>
+                    <span className="text-[#f0f6fc]">{valueText}</span>
+                  </div>
+                  {item.regionLabel ? (
+                    <div className="flex items-center justify-between gap-6">
+                      <span className="text-[#8b949e]">Referência</span>
+                      <span>{item.regionLabel}</span>
+                    </div>
+                  ) : null}
+                  <div className="flex items-center justify-between gap-6">
+                    <span className="text-[#8b949e]">Período analisado</span>
+                    <span>{item.period}</span>
+                  </div>
+                  <div>
+                    <span className="text-[#8b949e]">Fórmula/critério</span>
+                    <p className="mt-2 text-[#c9d1d9]">{item.formula}</p>
+                  </div>
+                  <div>
+                    <span className="text-[#8b949e]">Observação técnica</span>
+                    <p className="mt-2 text-[#c9d1d9]">{item.note}</p>
+                  </div>
+                  <div>
+                    <span className="text-[#8b949e]">Fonte pública</span>
+                    <p className="mt-2 text-[#c9d1d9]">{item.source}</p>
+                  </div>
+                </div>
+
+                <div className="border-t border-[#30363d] pt-4 text-sm text-[#c9d1d9]">
+                  <p className="text-xs uppercase tracking-widest text-[#8b949e] mb-2">Análise jurídico-econômica</p>
+                  <p>{item.legal}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="mt-12 border-t border-[#30363d] pt-6 text-xs text-[#8b949e] leading-relaxed">
+          Dados econômicos consolidados a partir de fontes públicas oficiais. Referências: IBGE, CONAB, MAPA, Banco Central do Brasil e entidades técnicas do setor agropecuário.
+        </div>
+
+        <div className="mt-4 text-[11px] text-[#6e7681]">
+          Aviso: indicadores com caráter informativo e educacional. Não substituem análise individualizada e não constituem promessa de resultado.
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const Contact = () => (
   <section id="contato" className="py-32 bg-[#161b22]">
     <div className="max-w-6xl mx-auto px-6">
@@ -374,6 +734,7 @@ const App: React.FC = () => {
         <About />
         <CalculadorasSection />
         <PracticeAreas />
+        <AgroIndicators />
         <Contact />
       </main>
       <Footer />
