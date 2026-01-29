@@ -2,10 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+html,
 body {
   font-family: 'Inter', sans-serif;
   background-color: #ffffff;
   color: #1a1a1a;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, .serif {

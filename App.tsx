@@ -48,9 +48,9 @@ const Navbar = () => {
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-[#161b22]/95 backdrop-blur-md py-4 shadow-sm' : 'bg-transparent py-8'}`}>
-      <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 flex justify-between items-center">
         <div className="flex items-center">
-          <Logo className={`transition-all duration-500 ease-out ${scrolled ? 'h-16 w-auto max-w-[200px]' : 'h-28 w-auto max-w-[360px]'}`} />
+          <Logo className={`transition-all duration-500 ease-out ${scrolled ? 'h-12 sm:h-16 w-auto max-w-[220px] sm:max-w-[280px]' : 'h-16 sm:h-24 lg:h-28 w-auto max-w-[240px] sm:max-w-[320px] lg:max-w-[360px]'}`} />
         </div>
 
         <div className="hidden lg:flex items-center gap-10">
@@ -70,7 +70,7 @@ const Navbar = () => {
       </div>
 
       {isOpen && (
-        <div className="absolute top-full left-0 w-full bg-[#161b22] border-t border-[#30363d] flex flex-col p-8 gap-6 shadow-xl lg:hidden">
+        <div className="absolute top-full left-0 w-full bg-[#161b22] border-t border-[#30363d] flex flex-col p-6 sm:p-8 gap-6 shadow-xl lg:hidden">
           {menuItems.map((item) => (
             <a key={item.name} href={item.href} onClick={() => setIsOpen(false)} className="text-sm uppercase tracking-widest text-[#f0f6fc] font-light">
               {item.name}
@@ -83,10 +83,10 @@ const Navbar = () => {
 };
 
 const Hero = () => (
-  <section id="inicio" className="relative min-h-screen flex items-center justify-center px-6 pt-20 overflow-hidden bg-[#0d1117] text-center">
+  <section id="inicio" className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 pt-24 sm:pt-28 overflow-hidden bg-[#0d1117] text-center">
 
     <div className="max-w-6xl mx-auto w-full relative z-10">
-      <h1 className="text-5xl md:text-7xl lg:text-8xl font-light leading-tight mb-8 text-[#f0f6fc]">
+      <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light leading-tight mb-8 text-[#f0f6fc]">
         Assessoria Jurídica em <br />
         <span className="italic serif">Sinop e Região.</span>
       </h1>
@@ -172,23 +172,23 @@ const PracticeAreas = () => {
   ];
 
   return (
-    <section id="atuacao" className="py-32 bg-[#161b22]">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8 text-center md:text-left">
+    <section id="atuacao" className="py-20 sm:py-28 lg:py-32 bg-[#161b22]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 sm:mb-24 gap-8 text-center md:text-left">
           <div className="max-w-xl">
-            <h2 className="text-4xl md:text-5xl font-light mb-6 text-[#f0f6fc]">Atuação</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-6 text-[#f0f6fc]">Atuação</h2>
             <p className="text-[#8b949e] font-light leading-relaxed">
               Atuação pautada pela ética e transparência em demandas administrativas e judiciais.
             </p>
           </div>
-          <div className="h-[1px] flex-grow bg-[#30363d] mx-12 hidden md:block mb-6"></div>
+          <div className="h-[1px] flex-grow bg-[#30363d] mx-0 sm:mx-12 hidden md:block mb-6"></div>
         </div>
 
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
           {areas.map((area, i) => (
             <div
               key={i}
-              className="flex flex-col p-8 border border-[#30363d] bg-[#0d1117]/50 hover:bg-[#161b22] hover:shadow-2xl transition-all duration-700 group relative overflow-hidden min-h-[380px]"
+              className="flex flex-col p-6 sm:p-8 border border-[#30363d] bg-[#0d1117]/50 hover:bg-[#161b22] hover:shadow-2xl transition-all duration-700 group relative overflow-hidden min-h-[320px] sm:min-h-[380px]"
             >
               <div className="absolute top-0 right-0 p-6 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity">
                 <Scale size={120} />
@@ -221,11 +221,11 @@ const About = () => {
   const [imgError, setImgError] = React.useState(false);
 
   return (
-    <section id="sobre" className="py-32 bg-[#0d1117]">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex flex-col lg:flex-row gap-24 items-center">
+    <section id="sobre" className="py-20 sm:py-28 lg:py-32 bg-[#0d1117]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-center">
           <div className="lg:w-1/2">
-            <div className="relative group mx-auto max-w-sm lg:max-w-none">
+            <div className="relative group mx-auto max-w-xs sm:max-w-sm lg:max-w-none">
               <div className="absolute -inset-4 border border-gold/20 translate-x-4 translate-y-4 -z-10 transition-transform duration-700"></div>
               <div className="aspect-[3/4] bg-[#161b22] p-3 shadow-2xl overflow-hidden">
                 {!imgError ? (
@@ -249,8 +249,8 @@ const About = () => {
           </div>
         <div className="lg:w-1/2">
           <span className="text-gold tracking-[0.3em] uppercase text-[10px] mb-6 block font-bold text-center lg:text-left">Conheça o Advogado</span>
-          <h2 className="text-4xl md:text-5xl font-light mb-10 leading-tight text-[#f0f6fc] text-center lg:text-left">Guilherme Garlini</h2>
-          <div className="space-y-8 text-[#c9d1d9] font-light leading-loose text-lg text-center lg:text-left">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-8 sm:mb-10 leading-tight text-[#f0f6fc] text-center lg:text-left">Guilherme Garlini</h2>
+          <div className="space-y-6 sm:space-y-8 text-[#c9d1d9] font-light leading-loose text-base sm:text-lg text-center lg:text-left">
             <p>
               Sou <strong>Guilherme Garlini</strong>, advogado regularmente inscrito na OAB, formado em Direito no ano de 2018, com sólida atuação em Sinop, Mato Grosso.
             </p>
@@ -265,7 +265,7 @@ const About = () => {
               <p><strong className="text-[#f0f6fc]">E-mail:</strong> advguilhermegarlini@gmail.com</p>
               <p><strong className="text-[#f0f6fc]">Contato:</strong> (66) 99956-2660</p>
             </div>
-            <div className="pt-8 border-t border-[#30363d] grid grid-cols-2 gap-6">
+            <div className="pt-8 border-t border-[#30363d] grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="flex items-center gap-3 text-gold text-[10px] uppercase tracking-widest font-bold">
                 <CheckCircle2 size={16} />
                 <span>Ética e Sigilo</span>
@@ -290,40 +290,12 @@ const AgroIndicators = () => {
     source: string;
     period: string;
     current: number | null;
-    previous: number | null;
     unit: string;
-    formula: string;
-    note: string;
-    legal: string;
     regionLabel?: string;
   };
 
-  const [selicAvg12m, setSelicAvg12m] = useState<number | null>(null);
-  const [selicLast, setSelicLast] = useState<number | null>(null);
-  const [selicPeriod, setSelicPeriod] = useState<string>('');
   const [priceIndicators, setPriceIndicators] = useState<Indicator[]>([]);
   const [priceUpdatedAt, setPriceUpdatedAt] = useState<string>('');
-
-  useEffect(() => {
-    const fetchSelic = async () => {
-      try {
-        const resp = await fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.4390/dados?formato=json');
-        const data: { data: string; valor: string }[] = await resp.json();
-        if (!Array.isArray(data) || data.length === 0) return;
-        const last12 = data.slice(-12);
-        const values = last12.map((item) => Number(item.valor.replace(',', '.'))).filter((v) => !Number.isNaN(v));
-        if (values.length === 0) return;
-        const avg = values.reduce((sum, v) => sum + v, 0) / values.length;
-        const last = values[values.length - 1];
-        setSelicAvg12m(avg);
-        setSelicLast(last);
-        setSelicPeriod(`${last12[0].data} a ${last12[last12.length - 1].data}`);
-      } catch {
-        // Silently ignore; UI will show fallback
-      }
-    };
-    fetchSelic();
-  }, []);
 
   useEffect(() => {
     const fetchConabPrices = async () => {
@@ -364,8 +336,6 @@ const AgroIndicators = () => {
           classificacao: string;
           uf: string;
           nivel: string;
-          note: string;
-          legal: string;
           unitLabel?: string;
           unitMultiplier?: number;
         }): Indicator => {
@@ -386,33 +356,19 @@ const AgroIndicators = () => {
               source: 'CONAB – Preços agropecuários (mensal/UF)',
               period: 'Dados oficiais não disponíveis',
               current: null,
-              previous: null,
               unit: unitLabel,
-              formula: 'Média simples das observações mensais disponíveis, convertida para saca de 60 kg',
-              note: config.note,
-              legal: config.legal,
-              regionLabel: config.uf,
+              regionLabel: `UF ${config.uf}`,
             };
           }
 
           const years = Array.from(new Set(filtered.map((row) => row.ano))).sort((a, b) => a - b);
-          const targetYear = years.includes(2026) ? 2026 : years[years.length - 1];
+          const targetYear = years[years.length - 1];
           const yearRows = filtered.filter((row) => row.ano === targetYear);
           const months = Array.from(new Set(yearRows.map((row) => row.mes))).sort((a, b) => a - b);
           const maxMonth = months.length > 0 ? months[months.length - 1] : 12;
-          const periodLabelBase = `Jan–${monthNames[maxMonth - 1]}/${targetYear}`;
-          const periodLabel = targetYear < 2026 ? `${periodLabelBase} (último dado oficial)` : periodLabelBase;
+          const periodLabel = `Jan–${monthNames[maxMonth - 1]}/${targetYear}`;
           const avg =
             (yearRows.reduce((sum, row) => sum + row.valor, 0) / (yearRows.length || 1)) * unitMultiplier;
-
-          const prevYear = targetYear - 1;
-          const prevRows = filtered.filter(
-            (row) => row.ano === prevYear && row.mes <= maxMonth
-          );
-          const prevAvg =
-            prevRows.length > 0
-              ? (prevRows.reduce((sum, row) => sum + row.valor, 0) / prevRows.length) * unitMultiplier
-              : null;
 
           return {
             id: config.id,
@@ -420,11 +376,7 @@ const AgroIndicators = () => {
             source: 'CONAB – Preços agropecuários (mensal/UF)',
             period: periodLabel,
             current: Number.isFinite(avg) ? avg : null,
-            previous: prevAvg,
             unit: unitLabel,
-            formula: 'Média simples das observações mensais disponíveis no período, convertida para saca de 60 kg',
-            note: config.note,
-            legal: config.legal,
             regionLabel: `UF ${config.uf}`,
           };
         };
@@ -432,198 +384,85 @@ const AgroIndicators = () => {
         const indicators: Indicator[] = [
           buildPriceIndicator({
             id: 'preco-soja-mt',
-            title: 'Preço médio da soja (MT)',
+            title: 'Preço da soja (saca 60 kg)',
             produto: 'SOJA',
             classificacao: 'EM GRÃOS',
             uf: 'MT',
             nivel: 'PREÇO RECEBIDO P/ PRODUTOR',
-            note: 'Oscilações de preço impactam margem e adimplemento de CPR e barter.',
-            legal:
-              'Em contratos de venda antecipada e CPR, variações relevantes exigem atenção a garantias, cronograma de entrega e cláusulas de reajuste. É prudente revisar mecanismos de proteção e condições de renegociação.',
             unitLabel: 'R$/sc (60 kg)',
             unitMultiplier: 60,
           }),
           buildPriceIndicator({
             id: 'preco-milho-mt',
-            title: 'Preço médio do milho (MT)',
+            title: 'Preço do milho (saca 60 kg)',
             produto: 'MILHO',
             classificacao: 'EM GRÃOS',
             uf: 'MT',
             nivel: 'PREÇO RECEBIDO P/ PRODUTOR',
-            note: 'Preço do milho influencia o custo de produção e o fluxo de caixa pós-safra.',
-            legal:
-              'Em contratos de fornecimento e financiamentos de custeio, mudanças no preço do milho podem gerar pressão por alongamento e revisão de garantias. Recomenda-se monitorar cláusulas de desempenho e risco climático.',
             unitLabel: 'R$/sc (60 kg)',
             unitMultiplier: 60,
           }),
           buildPriceIndicator({
             id: 'preco-boi-mt',
-            title: 'Preço médio do boi gordo (MT)',
+            title: 'Boi gordo (arroba)',
             produto: 'BOI',
             classificacao: 'GORDO',
             uf: 'MT',
             nivel: 'PREÇO RECEBIDO P/ PRODUTOR',
-            note: 'Variações no preço do boi afetam contratos de confinamento e entrega.',
-            legal:
-              'Oscilações no boi gordo impactam contratos de fornecimento e garantias reais. É recomendável prever mecanismos de ajuste e revisar condições de execução em operações de crédito rural.',
-            unitLabel: 'R$/kg',
-            unitMultiplier: 1,
-          }),
-          buildPriceIndicator({
-            id: 'preco-leite-mt',
-            title: 'Preço médio do leite (MT)',
-            produto: 'LEITE DE VACA',
-            classificacao: 'IN NATURA',
-            uf: 'MT',
-            nivel: 'PREÇO RECEBIDO P/ PRODUTOR',
-            note: 'Preço do leite reflete pressão de custos e sazonalidade.',
-            legal:
-              'Em contratos de fornecimento contínuo, oscilações do preço do leite exigem atenção a reajustes periódicos e garantias de recebíveis. Recomenda-se formalizar critérios de atualização.',
-            unitLabel: 'R$/kg',
-            unitMultiplier: 1,
+            unitLabel: 'R$/@',
+            unitMultiplier: 15,
           }),
         ];
 
         setPriceIndicators(indicators);
         setPriceUpdatedAt(new Date().toLocaleDateString('pt-BR'));
       } catch {
-        // Ignore failures; keep static indicators visible
+        // Ignore failures; keep UI with placeholders
       }
     };
 
     fetchConabPrices();
+    const interval = setInterval(fetchConabPrices, 24 * 60 * 60 * 1000);
+    return () => clearInterval(interval);
   }, []);
 
-  const percentChange = (current: number, previous: number) =>
-    ((current - previous) / previous) * 100;
-
-  const indicators: Indicator[] = [
-    ...priceIndicators,
-    {
-      id: 'lspa-soja-area',
-      title: 'Área plantada de soja',
-      source: 'IBGE – LSPA (nov/2025)',
-      period: 'Safra 2024 vs Safra 2025 (último dado oficial)',
-      current: 47_770_192,
-      previous: 46_328_794,
-      unit: 'ha',
-      formula: 'Variação % = (Área 2025 − Área 2024) ÷ Área 2024',
-      note: 'Expansão de área sugere maior pressão por contratos de arrendamento e logística.',
-      legal: 'Em contratos agrários, aumento de área tende a elevar disputas por prazos, preço do arrendamento e cumprimento de cláusulas de entrega. Recomenda-se revisão de garantias e prazos de CPRs vinculadas a safra.'
-    },
-    {
-      id: 'lspa-milho2-area',
-      title: 'Área colhida de milho 2ª safra',
-      source: 'IBGE – LSPA (nov/2025)',
-      period: 'Safra 2024 vs Safra 2025 (último dado oficial)',
-      current: 17_841_033,
-      previous: 16_674_590,
-      unit: 'ha',
-      formula: 'Variação % = (Área 2025 − Área 2024) ÷ Área 2024',
-      note: 'Crescimento da safrinha exige atenção a janelas climáticas e seguro rural.',
-      legal: 'Em contratos de compra futura e barter, o aumento da área impacta entregas e riscos de inadimplemento. Importante alinhar penalidades, cobertura de seguro e cláusulas de força maior.'
-    },
-    {
-      id: 'lspa-safra-total',
-      title: 'Produção total de grãos (estimativa)',
-      source: 'IBGE – LSPA (mar/2025, atualização 24/01/2026)',
-      period: 'Safra 2024 vs Safra 2025 (estimativa; último dado oficial)',
-      current: 323.8,
-      previous: 292.7,
-      unit: 'mi t',
-      formula: 'Variação % = (Safra 2025 − Safra 2024) ÷ Safra 2024',
-      note: 'Projeção de safra maior altera condições de armazenagem e fluxo de caixa.',
-      legal: 'A maior oferta tende a pressionar preços e renegociações em contratos de entrega. Cláusulas de reajuste e garantias reais devem ser revisadas em financiamentos e CPRs.'
-    },
-    {
-      id: 'selic-avg-12m',
-      title: 'SELIC média (12 meses)',
-      source: 'Banco Central do Brasil – SGS (Série 4390)',
-      period: selicPeriod || 'Últimos 12 meses disponíveis (2026)',
-      current: selicAvg12m,
-      previous: selicLast,
-      unit: '% a.m.',
-      formula: 'Média simples das 12 últimas observações da SELIC mensal',
-      note: 'Custo financeiro tende a impactar capital de giro e renegociações.',
-      legal: 'Em financiamentos rurais e operações com garantia real, a elevação da SELIC exige reavaliação do fluxo de caixa e dos índices de cobertura. Instrumentos de renegociação e alongamento devem considerar a capacidade de pagamento.'
-    }
-  ];
-
   return (
-    <section id="indicadores-agro" className="py-32 bg-[#0d1117]">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 text-center md:text-left">
+    <section id="indicadores-agro" className="py-20 sm:py-28 lg:py-32 bg-[#0d1117]">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16 gap-8 text-center md:text-left">
           <div className="max-w-2xl">
-            <h2 className="text-4xl md:text-5xl font-light mb-6 text-[#f0f6fc]">
-              Indicadores do Agronegócio – Análise Jurídico-Econômica
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light mb-6 text-[#f0f6fc]">
+              Indicadores do Agro – Preços CONAB
             </h2>
             <p className="text-[#8b949e] font-light leading-relaxed">
-              Leitura estratégica de dados públicos para apoiar decisões contratuais, crédito rural e gestão de riscos
-              de produtores e empresas do agro.
+              Somente preços oficiais: saca de soja, saca de milho e arroba do boi gordo.
             </p>
             {priceUpdatedAt && (
               <p className="text-xs text-[#6e7681] mt-4">
-                Atualizado em {priceUpdatedAt} (preços CONAB).
+                Atualização diária automática (CONAB). Última verificação: {priceUpdatedAt}.
               </p>
             )}
           </div>
-          <div className="h-[1px] flex-grow bg-[#30363d] mx-12 hidden md:block mb-6"></div>
+          <div className="h-[1px] flex-grow bg-[#30363d] mx-0 sm:mx-12 hidden md:block mb-6"></div>
         </div>
 
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-2">
-          {indicators.map((item) => {
-            const hasNumbers = typeof item.current === 'number' && typeof item.previous === 'number';
-            const pct = hasNumbers ? percentChange(item.current as number, item.previous as number) : null;
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          {priceIndicators.map((item) => {
             const valueText = typeof item.current === 'number'
-              ? `${item.current.toLocaleString('pt-BR', { maximumFractionDigits: 2 })}${item.unit ? ` ${item.unit}` : ''}`
-              : 'Carregando...';
-            const pctText = pct !== null ? `${pct >= 0 ? '+' : ''}${pct.toFixed(1)}%` : '—';
+              ? `${item.current.toLocaleString('pt-BR', { maximumFractionDigits: 2 })} ${item.unit}`
+              : 'Indisponível';
 
             return (
-              <div key={item.id} className="border border-[#30363d] bg-[#161b22]/50 p-8 flex flex-col gap-6">
-                <div className="flex items-start justify-between gap-6">
-                  <div>
-                    <p className="text-xs uppercase tracking-widest text-gold">Indicador</p>
-                    <h3 className="text-2xl font-light text-[#f0f6fc]">{item.title}</h3>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-[10px] uppercase tracking-widest text-[#8b949e]">Variação</p>
-                    <p className="text-lg text-[#f0f6fc]">{pctText}</p>
-                  </div>
-                </div>
-
-                <div className="grid gap-4 text-sm text-[#c9d1d9]">
-                  <div className="flex items-center justify-between gap-6">
-                    <span className="text-[#8b949e]">Resultado</span>
-                    <span className="text-[#f0f6fc]">{valueText}</span>
-                  </div>
-                  {item.regionLabel ? (
-                    <div className="flex items-center justify-between gap-6">
-                      <span className="text-[#8b949e]">Referência</span>
-                      <span>{item.regionLabel}</span>
-                    </div>
-                  ) : null}
-                  <div className="flex items-center justify-between gap-6">
-                    <span className="text-[#8b949e]">Período analisado</span>
-                    <span>{item.period}</span>
-                  </div>
-                  <div>
-                    <span className="text-[#8b949e]">Fórmula/critério</span>
-                    <p className="mt-2 text-[#c9d1d9]">{item.formula}</p>
-                  </div>
-                  <div>
-                    <span className="text-[#8b949e]">Observação técnica</span>
-                    <p className="mt-2 text-[#c9d1d9]">{item.note}</p>
-                  </div>
-                  <div>
-                    <span className="text-[#8b949e]">Fonte pública</span>
-                    <p className="mt-2 text-[#c9d1d9]">{item.source}</p>
-                  </div>
-                </div>
-
-                <div className="border-t border-[#30363d] pt-4 text-sm text-[#c9d1d9]">
-                  <p className="text-xs uppercase tracking-widest text-[#8b949e] mb-2">Análise jurídico-econômica</p>
-                  <p>{item.legal}</p>
+              <div key={item.id} className="border border-[#30363d] bg-[#161b22]/50 p-6 sm:p-8 flex flex-col gap-4">
+                <p className="text-xs uppercase tracking-widest text-gold">Preço oficial</p>
+                <h3 className="text-xl sm:text-2xl font-light text-[#f0f6fc]">{item.title}</h3>
+                <p className="text-2xl sm:text-3xl font-light text-[#f0f6fc]">{valueText}</p>
+                {item.regionLabel ? (
+                  <p className="text-xs uppercase tracking-widest text-[#8b949e]">{item.regionLabel}</p>
+                ) : null}
+                <div className="text-xs text-[#8b949e] space-y-2">
+                  <p>Período: {item.period}</p>
+                  <p>Fonte: {item.source}</p>
                 </div>
               </div>
             );
@@ -631,11 +470,7 @@ const AgroIndicators = () => {
         </div>
 
         <div className="mt-12 border-t border-[#30363d] pt-6 text-xs text-[#8b949e] leading-relaxed">
-          Dados econômicos consolidados a partir de fontes públicas oficiais. Referências: IBGE, CONAB, MAPA, Banco Central do Brasil e entidades técnicas do setor agropecuário.
-        </div>
-
-        <div className="mt-4 text-[11px] text-[#6e7681]">
-          Aviso: indicadores com caráter informativo e educacional. Não substituem análise individualizada e não constituem promessa de resultado.
+          Fonte oficial: CONAB (Preços agropecuários mensal/UF).
         </div>
       </div>
     </section>
@@ -643,19 +478,19 @@ const AgroIndicators = () => {
 };
 
 const Contact = () => (
-  <section id="contato" className="py-32 bg-[#161b22]">
-    <div className="max-w-6xl mx-auto px-6">
-      <div className="flex flex-col lg:flex-row gap-24">
+    <section id="contato" className="py-20 sm:py-28 lg:py-32 bg-[#161b22]">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6">
+      <div className="flex flex-col lg:flex-row gap-12 lg:gap-24">
         <div className="lg:w-1/3">
-          <h2 className="text-4xl font-light mb-12 text-[#f0f6fc]">Contato Profissional</h2>
+          <h2 className="text-3xl sm:text-4xl font-light mb-10 sm:mb-12 text-[#f0f6fc]">Contato Profissional</h2>
           <div className="space-y-12">
             <div>
               <p className="text-[10px] uppercase tracking-widest text-gold mb-6 font-bold">Informações de Contato</p>
               <div className="space-y-6">
-                <a href="mailto:advguilhermegarlini@gmail.com" className="text-lg font-light hover:text-gold transition-colors flex items-center gap-4 text-[#c9d1d9]">
+                <a href="mailto:advguilhermegarlini@gmail.com" className="text-base sm:text-lg font-light hover:text-gold transition-colors flex items-center gap-4 text-[#c9d1d9]">
                   <Mail size={20} strokeWidth={1} className="text-gold" /> advguilhermegarlini@gmail.com
                 </a>
-                <a href="https://wa.me/5566999562660" className="text-lg font-light hover:text-gold transition-colors flex items-center gap-4 text-[#c9d1d9]">
+                <a href="https://wa.me/5566999562660" className="text-base sm:text-lg font-light hover:text-gold transition-colors flex items-center gap-4 text-[#c9d1d9]">
                   <MessageCircle size={20} strokeWidth={1} className="text-gold" /> (66) 99956-2660
                 </a>
               </div>
@@ -664,7 +499,7 @@ const Contact = () => (
               <p className="text-[10px] uppercase tracking-widest text-gold mb-6 font-bold">Atendimento</p>
               <div className="flex items-start gap-4">
                 <MapPin size={20} strokeWidth={1} className="mt-1 text-gold" />
-                <p className="text-lg font-light leading-relaxed text-[#c9d1d9]">
+                <p className="text-base sm:text-lg font-light leading-relaxed text-[#c9d1d9]">
                   Sinop, Mato Grosso <br />
                   <span className="text-sm text-[#8b949e] italic">Atendimento presencial e online para todo o estado</span>
                 </p>
@@ -674,15 +509,15 @@ const Contact = () => (
         </div>
         
         <div className="lg:w-2/3">
-          <form className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10" onSubmit={e => e.preventDefault()}>
+          <form className="grid grid-cols-1 md:grid-cols-2 gap-x-8 sm:gap-x-12 gap-y-10" onSubmit={e => e.preventDefault()}>
             <div className="border-b border-[#30363d] pb-3">
-              <input type="text" placeholder="Nome completo" className="w-full bg-transparent outline-none font-light py-2 text-lg focus:placeholder-transparent transition-all" />
+              <input type="text" placeholder="Nome completo" className="w-full bg-transparent outline-none font-light py-2 text-base sm:text-lg focus:placeholder-transparent transition-all" />
             </div>
             <div className="border-b border-[#30363d] pb-3">
-              <input type="email" placeholder="E-mail" className="w-full bg-transparent outline-none font-light py-2 text-lg focus:placeholder-transparent transition-all" />
+              <input type="email" placeholder="E-mail" className="w-full bg-transparent outline-none font-light py-2 text-base sm:text-lg focus:placeholder-transparent transition-all" />
             </div>
             <div className="md:col-span-2 border-b border-[#30363d] pb-3">
-              <select className="w-full bg-transparent outline-none font-light py-2 text-lg text-[#8b949e] focus:text-[#f0f6fc] transition-all">
+              <select className="w-full bg-transparent outline-none font-light py-2 text-base sm:text-lg text-[#8b949e] focus:text-[#f0f6fc] transition-all">
                 <option value="">Selecione o assunto</option>
                 <option value="previdenciario">Outros Benefícios INSS</option>
                 <option value="condominial">Direito Condominial</option>
@@ -690,7 +525,7 @@ const Contact = () => (
               </select>
             </div>
             <div className="md:col-span-2 border-b border-[#30363d] pb-3">
-              <textarea placeholder="Como posso auxiliá-lo juridicamente?" rows={3} className="w-full bg-transparent outline-none font-light py-2 text-lg resize-none focus:placeholder-transparent transition-all"></textarea>
+              <textarea placeholder="Como posso auxiliá-lo juridicamente?" rows={3} className="w-full bg-transparent outline-none font-light py-2 text-base sm:text-lg resize-none focus:placeholder-transparent transition-all"></textarea>
             </div>
             <div className="md:col-span-2 pt-6">
               <button className="text-[10px] uppercase tracking-[0.4em] text-gold border border-gold px-14 py-6 hover:bg-gold hover:text-white transition-all w-full sm:w-auto font-bold shadow-lg hover:shadow-gold/20">
@@ -705,8 +540,8 @@ const Contact = () => (
 );
 
 const Footer = () => (
-  <footer className="py-24 border-t border-[#30363d] bg-[#161b22]">
-    <div className="max-w-6xl mx-auto px-6 flex flex-col items-center text-center">
+  <footer className="py-16 sm:py-24 border-t border-[#30363d] bg-[#161b22]">
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col items-center text-center">
       <Logo className="w-16 h-16 mb-10" />
       <div className="mb-10">
         <span className="text-2xl tracking-[0.25em] font-light block mb-3 uppercase text-[#f0f6fc]">GUILHERME GARLINI</span>
@@ -727,7 +562,7 @@ const Footer = () => (
 
 const App: React.FC = () => {
   return (
-    <div className="min-h-screen selection:bg-gold/20 selection:text-gold bg-[#0d1117] antialiased">
+    <div className="min-h-screen selection:bg-gold/20 selection:text-gold bg-[#0d1117] antialiased overflow-x-hidden">
       <Navbar />
       <main>
         <Hero />
@@ -740,12 +575,12 @@ const App: React.FC = () => {
       <Footer />
       
       {/* Subtle Floating Contact Button */}
-      <div className="fixed bottom-10 right-10 z-50 flex flex-col items-center">
+      <div className="fixed bottom-6 right-6 sm:bottom-10 sm:right-10 z-50 flex flex-col items-center">
         <a
           href="https://wa.me/5566999562660"
           target="_blank"
           rel="noreferrer"
-          className="whatsapp-blink w-20 h-20 rounded-full shadow-2xl hover:shadow-gold/20 hover:-translate-y-2 transition-all"
+          className="whatsapp-blink w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-2xl hover:shadow-gold/20 hover:-translate-y-2 transition-all"
           title="Falar com Dr. Guilherme"
         >
           <img
