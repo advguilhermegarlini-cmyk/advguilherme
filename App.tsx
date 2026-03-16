@@ -84,14 +84,35 @@ const Navbar = () => {
 
 const Hero = () => (
   <section id="inicio" className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 pt-24 sm:pt-28 overflow-hidden bg-[#0d1117] text-center">
-
-    <div className="max-w-6xl mx-auto w-full relative z-10">
-      <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light leading-tight mb-8 text-[#f0f6fc]">
+    <div className="max-w-4xl mx-auto w-full relative z-10 flex flex-col items-center gap-8">
+      <span className="text-[10px] uppercase tracking-[0.4em] text-gold font-bold">OAB/MT 35967 — Sinop, Mato Grosso</span>
+      <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light leading-tight text-[#f0f6fc]">
         Assessoria Jurídica em <br />
         <span className="italic serif">Sinop e Região.</span>
       </h1>
+      <p className="text-base sm:text-lg text-[#8b949e] font-light leading-relaxed max-w-xl">
+        Atuação ética e estratégica em Direito Previdenciário, Condominial, Agronegócio e Civil — com foco em resultados reais para cada cliente.
+      </p>
+      <div className="flex flex-col sm:flex-row gap-4 mt-2">
+        <a
+          href="https://wa.me/5566999562660"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Falar com Dr. Guilherme pelo WhatsApp"
+          className="text-[10px] uppercase tracking-[0.4em] font-bold bg-gold text-white px-10 py-5 hover:opacity-80 transition-opacity"
+        >
+          Consulta pelo WhatsApp
+        </a>
+        <a
+          href="#atuacao"
+          aria-label="Ver áreas de atuação"
+          className="text-[10px] uppercase tracking-[0.4em] font-bold border border-[#30363d] text-[#c9d1d9] px-10 py-5 hover:border-gold hover:text-gold transition-all"
+        >
+          Ver Atuação
+        </a>
+      </div>
     </div>
-    <div className="absolute bottom-12 left-1/2 -translate-x-1/2 opacity-30">
+    <div className="absolute bottom-12 left-1/2 -translate-x-1/2 opacity-30" aria-hidden="true">
       <div className="w-[1px] h-16 bg-gold"></div>
     </div>
   </section>
@@ -509,26 +530,32 @@ const Contact = () => (
         </div>
         
         <div className="lg:w-2/3">
-          <form className="grid grid-cols-1 md:grid-cols-2 gap-x-8 sm:gap-x-12 gap-y-10" onSubmit={e => e.preventDefault()}>
-            <div className="border-b border-[#30363d] pb-3">
-              <input type="text" placeholder="Nome completo" className="w-full bg-transparent outline-none font-light py-2 text-base sm:text-lg focus:placeholder-transparent transition-all" />
+          <form className="grid grid-cols-1 md:grid-cols-2 gap-x-8 sm:gap-x-12 gap-y-10" onSubmit={e => e.preventDefault()} noValidate>
+            <div className="flex flex-col gap-1 border-b border-[#30363d] pb-3">
+              <label htmlFor="contact-name" className="text-[10px] uppercase tracking-widest text-[#8b949e] font-bold">Nome completo <span aria-hidden="true" className="text-gold">*</span></label>
+              <input id="contact-name" type="text" name="name" required autoComplete="name" aria-required="true" placeholder="Seu nome" className="w-full bg-transparent outline-none font-light py-2 text-base sm:text-lg focus:placeholder-transparent transition-all" />
             </div>
-            <div className="border-b border-[#30363d] pb-3">
-              <input type="email" placeholder="E-mail" className="w-full bg-transparent outline-none font-light py-2 text-base sm:text-lg focus:placeholder-transparent transition-all" />
+            <div className="flex flex-col gap-1 border-b border-[#30363d] pb-3">
+              <label htmlFor="contact-email" className="text-[10px] uppercase tracking-widest text-[#8b949e] font-bold">E-mail <span aria-hidden="true" className="text-gold">*</span></label>
+              <input id="contact-email" type="email" name="email" required autoComplete="email" aria-required="true" placeholder="seu@email.com" className="w-full bg-transparent outline-none font-light py-2 text-base sm:text-lg focus:placeholder-transparent transition-all" />
             </div>
-            <div className="md:col-span-2 border-b border-[#30363d] pb-3">
-              <select className="w-full bg-transparent outline-none font-light py-2 text-base sm:text-lg text-[#8b949e] focus:text-[#f0f6fc] transition-all">
+            <div className="md:col-span-2 flex flex-col gap-1 border-b border-[#30363d] pb-3">
+              <label htmlFor="contact-subject" className="text-[10px] uppercase tracking-widest text-[#8b949e] font-bold">Assunto</label>
+              <select id="contact-subject" name="subject" className="w-full bg-transparent outline-none font-light py-2 text-base sm:text-lg text-[#8b949e] focus:text-[#f0f6fc] transition-all">
                 <option value="">Selecione o assunto</option>
-                <option value="previdenciario">Outros Benefícios INSS</option>
+                <option value="previdenciario">Benefícios INSS / Previdenciário</option>
                 <option value="condominial">Direito Condominial</option>
+                <option value="agronegocio">Direito do Agronegócio</option>
+                <option value="civil">Direito Civil</option>
                 <option value="outro">Outros Assuntos</option>
               </select>
             </div>
-            <div className="md:col-span-2 border-b border-[#30363d] pb-3">
-              <textarea placeholder="Como posso auxiliá-lo juridicamente?" rows={3} className="w-full bg-transparent outline-none font-light py-2 text-base sm:text-lg resize-none focus:placeholder-transparent transition-all"></textarea>
+            <div className="md:col-span-2 flex flex-col gap-1 border-b border-[#30363d] pb-3">
+              <label htmlFor="contact-message" className="text-[10px] uppercase tracking-widest text-[#8b949e] font-bold">Mensagem <span aria-hidden="true" className="text-gold">*</span></label>
+              <textarea id="contact-message" name="message" required aria-required="true" placeholder="Descreva brevemente como posso ajudá-lo..." rows={4} className="w-full bg-transparent outline-none font-light py-2 text-base sm:text-lg resize-none focus:placeholder-transparent transition-all"></textarea>
             </div>
             <div className="md:col-span-2 pt-6">
-              <button className="text-[10px] uppercase tracking-[0.4em] text-gold border border-gold px-14 py-6 hover:bg-gold hover:text-white transition-all w-full sm:w-auto font-bold shadow-lg hover:shadow-gold/20">
+              <button type="submit" className="text-[10px] uppercase tracking-[0.4em] text-gold border border-gold px-14 py-6 hover:bg-gold hover:text-white transition-all w-full sm:w-auto font-bold shadow-lg hover:shadow-gold/20">
                 Enviar Mensagem
               </button>
             </div>
@@ -553,7 +580,7 @@ const Footer = () => (
         ))}
       </div>
       <div className="text-[10px] text-[#6e7681] font-light tracking-widest uppercase leading-relaxed">
-        Â© {new Date().getFullYear()} Guilherme Garlini Advocacia. <br /> 
+        &copy; {new Date().getFullYear()} Guilherme Garlini Advocacia. <br />
         Sinop - Mato Grosso | Atendimento em todo o Brasil.
       </div>
     </div>
